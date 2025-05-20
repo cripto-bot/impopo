@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Búsqueda eBay</title>
+</head>
+<body>
+  <h1>Buscar productos en eBay</h1>
+  <input type="text" id="query" placeholder="Buscar...">
+  <button onclick="buscar()">Buscar</button>
+  <div id="resultados"></div>
+
+  <script>
+    async function buscar() {
+      const q = document.getElementById('query').value;
+      const res = await fetch(`http://localhost:3000/buscar?q=${encodeURIComponent(q)}`);
+      const data = await res.json();
+      const cont = document.getElementById('resultados');
+      cont.innerHTML = data.map(p => `
+        <div>
+          <h3>${p.titulo}</h3>
+          <p>Precio: ${p.precio}</p>
+          <a href="${p.link}" target="_blank">Ver en eBay</a>
+        </div>
+      `).join('');
+    }
+  </script>
+</body>
+</html>
